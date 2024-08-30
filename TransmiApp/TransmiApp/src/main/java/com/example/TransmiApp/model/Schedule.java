@@ -13,7 +13,7 @@ public class Schedule {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idSchedule;
+    private Integer idSchedule;
     private List<String> days;
     private Time timeStart;
     private Time timeEnd;

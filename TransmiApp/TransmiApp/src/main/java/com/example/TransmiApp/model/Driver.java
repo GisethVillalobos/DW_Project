@@ -13,7 +13,7 @@ public class Driver {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idDriver;
+    private Integer idDriver;
     private String name;
     private String identification;
     private String phone;

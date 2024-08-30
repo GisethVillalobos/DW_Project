@@ -12,7 +12,7 @@ public class Assignment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idAssignment;
+    private Integer idAssignment;
 
     @ManyToOne
     @JoinColumn(name = "driver_idDriver")

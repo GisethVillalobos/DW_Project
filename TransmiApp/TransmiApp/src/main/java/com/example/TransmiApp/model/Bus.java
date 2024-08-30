@@ -12,7 +12,7 @@ public class Bus {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idBus;
+    private Integer idBus;
     private String plate;
     private String model;
 

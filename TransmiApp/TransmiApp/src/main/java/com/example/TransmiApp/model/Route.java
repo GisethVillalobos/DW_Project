@@ -12,7 +12,7 @@ public class Route {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idRoute;
+    private Integer idRoute;
     private String code;
     private List<String> stations;
 
