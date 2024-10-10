@@ -2,6 +2,8 @@ package com.example.TransmiApp.model;
 
 import java.util.*;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,6 +28,7 @@ public class Driver {
     private String phone;
     private String address;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "driver")
     private Set<Assignment> assignments;
 

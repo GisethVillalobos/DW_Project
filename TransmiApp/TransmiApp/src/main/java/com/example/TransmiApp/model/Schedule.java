@@ -1,6 +1,9 @@
 package com.example.TransmiApp.model;
 
 import java.util.*;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.*;
 import java.sql.Time;
 
@@ -25,6 +28,7 @@ public class Schedule {
     private Time timeStart;
     private Time timeEnd;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "schedule")
     private Set<Assignment> assignments;
 

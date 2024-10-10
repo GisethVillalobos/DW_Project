@@ -51,4 +51,5 @@ public class DriverController {
         driverService.deleteDriver(idDriver);
         return ResponseEntity.noContent().build();
     }
+
 }

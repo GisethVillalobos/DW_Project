@@ -16,31 +16,30 @@ function uploadDrivers() {
                 trHTML += "<td>" + object["address"] + "</td>";
                 trHTML += "<td>" + object["assignments"] + "</td>";
                 trHTML +=
-                    '<td><button type="button" class="btn btn-outline-secondary" onclick="updateDriver(' + object["id"] + ')">Editar</button>';
+                    '<td><button type="button" class="btn btn-outline-secondary" onclick="updateDriver(' + object["idDriver"] + ')">Editar</button>';
                 trHTML +=
-                    '<button type="button" class="btn btn-outline-danger" onclick="deleteDriver(' + object["id"] + ')">Borrar</button></td>';
+                    '<button type="button" class="btn btn-outline-danger" onclick="deleteDriver(' + object["idDriver"] + ')">Borrar</button></td>';
                 trHTML += "</tr>";
             }
-            document.getElementById("driverTable").innerHTML = trHTML;
+            document.getElementById("driversTable").innerHTML = trHTML;
         }
     };
 }
 uploadDrivers();
 
-function editDriver() {
+function showDriverCreateBox() {
     Swal.fire({
-        title: "Editar Conductor",
+        title: 'Crear nuevo conductor',
         html:
-            '<input id="id" type="hidden">' +
-            '<input id="name" class="swal2-input"  placeholder="Name">' +
-            '<input id="identification" class="swal2-input" placeholder="Identification">' +
-            '<input id="phone" class="swal2-input"  placeholder="Phone">' +
-            '<input id="address" class="swal2-input" placeholder="Address">' +
-            '<input id="assignments" class="swal2-input" placeholder="Assignments">',
+            '<input id="name" class="swal2-input" placeholder="Nombre">' +
+            '<input id="identification" class="swal2-input" placeholder="Cédula">' +
+            '<input id="phone" class="swal2-input" placeholder="Teléfono">' +
+            '<input id="address" class="swal2-input" placeholder="Dirección">' +
+            '<input id="assignments" class="swal2-input" placeholder="Asignaciones">',
         focusConfirm: false,
         preConfirm: () => {
             createDriver();
-        },
+        }
     });
 }
 
@@ -53,7 +52,7 @@ function createDriver() {
 
     const xhttp = new XMLHttpRequest();
     xhttp.open("POST", "http://localhost:8080/api/driver/create");
-        xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     xhttp.send(
         JSON.stringify({
             name: name,
@@ -65,53 +64,38 @@ function createDriver() {
     );
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
-            const objects = JSON.parse(this.responseText);
-            Swal.fire(objects["message"]);
-            uploadBuses();
+            Swal.fire('Conductor creado correctamente');
+            uploadDrivers(); // Actualizar la tabla
         }
     };
 }
 
-function updateBus(id) {
-    console.log(id);
+function updateDriver(idDriver) {
     const xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "http://localhost:8080/api/bus/read/" + id );
-        xhttp.send();
+    xhttp.open("GET", "http://localhost:8080/api/driver/update/" + idDriver);
+    xhttp.send();
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
-            const obj = JSON.parse(this.responseText);
-            console.log(obj.idDriver);
+            const driver = JSON.parse(this.responseText);
             Swal.fire({
-                title: "Editar Conductor",
+                title: 'Editar conductor',
                 html:
-                    '<input id="id" type="hidden" value=' +
-                    obj.idDriver +
-                    ">" +
-                    '<input id="name" class="swal2-input" placeholder="name" value="' +
-                    obj.name +
-                    '">' +
-                    '<input id="identification" class="swal2-input" placeholder="identification" value="' +
-                    obj.identification +
-                    '">' +
-                    '<input id="phone" class="swal2-input" placeholder="phone" value="' +
-                    obj.phone +
-                    '">' +
-                    '<input id="address" class="swal2-input" placeholder="address" value="' +
-                    obj.address +
-                    '">' +
-                    '<input id="assignments" class="swal2-input" placeholder="Assignments" value="' +
-                    obj.assignments +
-                    '">',
+                    '<input id="id" type="hidden" value="' + driver.idDriver + '">' +
+                    '<input id="name" class="swal2-input" placeholder="Nombre" value="' + driver.name + '">' +
+                    '<input id="identification" class="swal2-input" placeholder="Cédula" value="' + driver.identification + '">' +
+                    '<input id="phone" class="swal2-input" placeholder="Teléfono" value="' + driver.phone + '">' +
+                    '<input id="address" class="swal2-input" placeholder="Dirección" value="' + driver.address + '">' +
+                    '<input id="assignments" class="swal2-input" placeholder="Asignaciones" value="' + driver.assignments + '">',
                 focusConfirm: false,
                 preConfirm: () => {
-                    editarConductor(obj.id);
-                },
+                    editDriver(driver.idDriver);
+                }
             });
         }
     };
 }
 
-function editarConductor(id) {
+function editDriver(idDriver) {
     const name = document.getElementById("name").value;
     const identification = document.getElementById("identification").value;
     const phone = document.getElementById("phone").value;
@@ -119,11 +103,11 @@ function editarConductor(id) {
     const assignments = document.getElementById("assignments").value;
 
     const xhttp = new XMLHttpRequest();
-    xhttp.open("PUT", "http://localhost:8080/api/driver/update/" + id );
-        xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    xhttp.open("PUT", "http://localhost:8080/api/driver/update/" + idDriver);
+    xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     xhttp.send(
         JSON.stringify({
-            idDriver: id,
+            idDriver: idDriver,
             name: name,
             identification: identification,
             phone: phone,
@@ -133,28 +117,21 @@ function editarConductor(id) {
     );
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
-            const objects = JSON.parse(this.responseText);
-            Swal.fire(objects["message"]);
-            uploadDrivers();
+            Swal.fire('Conductor actualizado correctamente');
+            uploadDrivers(); // Actualizar la tabla
         }
     };
 }
-function deleteDriver(id) {
+
+function deleteDriver(idDriver) {
     const xhttp = new XMLHttpRequest();
-    xhttp.open("DELETE", "http://localhost:8080/api/driver/delete/" + id );
-        xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    xhttp.send(
-        JSON.stringify({
-            id: id,
-        })
-    );
+    xhttp.open("DELETE", "http://localhost:8080/api/driver/delete/" + idDriver);
+    xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    xhttp.send();
     xhttp.onreadystatechange = function () {
         if (this.status == 204) {
-            Swal.fire("Conductor eliminado");
-            uploadDrivers();
+            Swal.fire('Conductor eliminado correctamente');
+            uploadDrivers(); // Actualizar la tabla
         }
     };
 }
-
-
-

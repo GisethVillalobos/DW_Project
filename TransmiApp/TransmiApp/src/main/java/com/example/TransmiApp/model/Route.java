@@ -1,6 +1,9 @@
 package com.example.TransmiApp.model;
 
 import java.util.*;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,6 +25,7 @@ public class Route {
     private String code;
     private List<String> stations;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "route")
     private Set<Assignment> assignments;
 
