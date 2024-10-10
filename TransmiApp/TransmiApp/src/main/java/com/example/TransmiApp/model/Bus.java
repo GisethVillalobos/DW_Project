@@ -35,4 +35,37 @@ public class Bus {
         this.assignments = assignments;
     }
 
+    public Long getIdBus() {
+        return idBus;
+    }
+
+    public void setIdBus(Long idBus) {
+        this.idBus = idBus;
+    }
+
+    public String getPlate() {
+        return plate;
+    }
+
+    public void setPlate(String plate) {
+        this.plate = plate;
+    }
+
+    public String getModel() {
+        return model;
+    }
+
+    public void setModel(String model) {
+        this.model = model;
+    }
+
+    public Set<Assignment> getAssignments() {
+        return assignments;
+    }
+
+    public void setAssignments(Set<Assignment> assignments) {
+        this.assignments = assignments;
+    }
+
+
 }

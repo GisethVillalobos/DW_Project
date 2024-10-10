@@ -38,4 +38,46 @@ public class Schedule {
         this.timeEnd = timeEnd;
         this.assignments = assignments;
     }
+
+    public Long getIdSchedule() {
+        return idSchedule;
+    }
+
+    public void setIdSchedule(Long idSchedule) {
+        this.idSchedule = idSchedule;
+    }
+
+    public List<String> getDays() {
+        return days;
+    }
+
+    public void setDays(List<String> days) {
+        this.days = days;
+    }
+
+    public Time getTimeStart() {
+        return timeStart;
+    }
+
+    public void setTimeStart(Time timeStart) {
+        this.timeStart = timeStart;
+    }
+
+    public Time getTimeEnd() {
+        return timeEnd;
+    }
+
+    public void setTimeEnd(Time timeEnd) {
+        this.timeEnd = timeEnd;
+    }
+
+    public Set<Assignment> getAssignments() {
+        return assignments;
+    }
+
+    public void setAssignments(Set<Assignment> assignments) {
+        this.assignments = assignments;
+    }
+
+
 }

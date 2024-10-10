@@ -35,4 +35,38 @@ public class Route {
         this.assignments = assignments;
     }
 
+    public Long getIdRoute() {
+        return idRoute;
+    }
+
+    public void setIdRoute(Long idRoute) {
+        this.idRoute = idRoute;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public List<String> getStations() {
+        return stations;
+    }
+
+    public void setStations(List<String> stations) {
+        this.stations = stations;
+    }
+
+    public Set<Assignment> getAssignments() {
+        return assignments;
+    }
+
+    public void setAssignments(Set<Assignment> assignments) {
+        this.assignments = assignments;
+    }
+
+
+
 }

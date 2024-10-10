@@ -1,13 +1,13 @@
 package com.example.TransmiApp.service.impl;
 
-import com.example.TransmiApp.model.Schedule;
-import com.example.TransmiApp.repository.ScheduleRepository;
-import com.example.TransmiApp.service.ScheduleService;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import com.example.TransmiApp.model.Schedule;
+import com.example.TransmiApp.repository.ScheduleRepository;
+import com.example.TransmiApp.service.ScheduleService;
 
 @Service
 public class ScheduleServiceImpl implements ScheduleService {
@@ -17,12 +17,12 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     public List<Schedule> getAllSchedules() {
-        return scheduleRepository.findAll();
+        return (List<Schedule>) scheduleRepository.findAll();
     }
 
     @Override
-    public Optional<Schedule> getScheduleById(Long idSchedule) {
-        return scheduleRepository.findById(idSchedule);
+    public Schedule getScheduleById(Long idSchedule) {
+        return scheduleRepository.findById(idSchedule).orElse(null);
     }
 
     @Override
@@ -31,12 +31,15 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override
-    public Optional<Schedule> updateSchedule(Long idSchedule, Schedule schedule) {
-        if (scheduleRepository.existsById(idSchedule)) {
-            schedule.setIdSchedule(idSchedule);
-            return Optional.of(scheduleRepository.save(schedule));
-        }
-        return Optional.empty();
+    public Schedule updateSchedule(Long idSchedule, Schedule schedule) {
+        Schedule existingSchedule = scheduleRepository.findById(idSchedule).orElseThrow();
+
+        existingSchedule.setDays(schedule.getDays());
+        existingSchedule.setTimeStart(schedule.getTimeStart());
+        existingSchedule.setTimeEnd(schedule.getTimeEnd());
+        existingSchedule.setAssignments(schedule.getAssignments());
+        
+        return scheduleRepository.save(existingSchedule);
     }
 
     @Override

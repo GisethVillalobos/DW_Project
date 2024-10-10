@@ -1,10 +1,10 @@
 package com.example.TransmiApp.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.TransmiApp.model.Driver;
@@ -19,37 +20,40 @@ import com.example.TransmiApp.service.DriverService;
 
 @RestController
 @RequestMapping("/api/driver")
+@CrossOrigin(origins = "http://localhost:4200")
 public class DriverController {
 
     @Autowired
     private DriverService driverService;
 
-    @GetMapping("/all")
-    public List<Driver> getAllDrivers() {
-        return driverService.getAllDrivers();
-    }
-
-    @GetMapping("/read/{idDriver}")
-    public ResponseEntity<Driver> getDriverById(@PathVariable Long idDriver) {
-        Optional<Driver> driver = driverService.getDriverById(idDriver);
-        return driver.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
-    }
-
     @PostMapping("/create")
+    @ResponseStatus(value = HttpStatus.CREATED)
     public Driver createDriver(@RequestBody Driver driver) {
         return driverService.createDriver(driver);
     }
 
+    @GetMapping("/all")
+    @ResponseStatus(value = HttpStatus.OK)
+    public List<Driver> findAllDrivers() {
+        return driverService.getAllDrivers();
+    }
+
+    @GetMapping("/read/{idDriver}")
+    @ResponseStatus(value = HttpStatus.OK)
+    public Driver findById(@PathVariable Long idDriver) {
+        return driverService.getDriverById(idDriver);
+    }
+
     @PutMapping("/update/{idDriver}")
-    public ResponseEntity<Driver> updateDriver(@PathVariable Long idDriver, @RequestBody Driver driver) {
-        Optional<Driver> updatedDriver = driverService.updateDriver(idDriver, driver);
-        return updatedDriver.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    @ResponseStatus(value = HttpStatus.OK)
+    public Driver updateDriver(@PathVariable Long idDriver, @RequestBody Driver driver) {
+        return driverService.updateDriver(idDriver, driver);
     }
 
     @DeleteMapping("/delete/{idDriver}")
-    public ResponseEntity<Void> deleteDriver(@PathVariable Long idDriver) {
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void deleteDriver(@PathVariable Long idDriver) {
         driverService.deleteDriver(idDriver);
-        return ResponseEntity.noContent().build();
     }
 
 }

@@ -1,13 +1,13 @@
 package com.example.TransmiApp.service.impl;
 
-import com.example.TransmiApp.model.Route;
-import com.example.TransmiApp.repository.RouteRepository;
-import com.example.TransmiApp.service.RouteService;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import com.example.TransmiApp.model.Route;
+import com.example.TransmiApp.repository.RouteRepository;
+import com.example.TransmiApp.service.RouteService;
 
 @Service
 public class RouteServiceImpl implements RouteService {
@@ -17,12 +17,12 @@ public class RouteServiceImpl implements RouteService {
 
     @Override
     public List<Route> getAllRoutes() {
-        return routeRepository.findAll();
+        return (List<Route>) routeRepository.findAll();
     }
 
     @Override
-    public Optional<Route> getRouteById(Long idRoute) {
-        return routeRepository.findById(idRoute);
+    public Route getRouteById(Long idRoute) {
+        return routeRepository.findById(idRoute).orElse(null);
     }
 
     @Override
@@ -31,12 +31,14 @@ public class RouteServiceImpl implements RouteService {
     }
 
     @Override
-    public Optional<Route> updateRoute(Long idRoute, Route route) {
-        if (routeRepository.existsById(idRoute)) {
-            route.setIdRoute(idRoute);
-            return Optional.of(routeRepository.save(route));
-        }
-        return Optional.empty();
+    public Route updateRoute(Long idRoute, Route route) {
+        Route existingRoute = routeRepository.findById(idRoute).orElseThrow();
+
+        existingRoute.setCode(route.getCode());
+        existingRoute.setStations(route.getStations());
+        existingRoute.setAssignments(route.getAssignments());
+        
+        return routeRepository.save(existingRoute);
     }
 
     @Override

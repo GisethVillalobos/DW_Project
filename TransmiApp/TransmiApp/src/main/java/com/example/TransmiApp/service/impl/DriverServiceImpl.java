@@ -1,13 +1,13 @@
 package com.example.TransmiApp.service.impl;
 
-import com.example.TransmiApp.model.Driver;
-import com.example.TransmiApp.repository.DriverRepository;
-import com.example.TransmiApp.service.DriverService;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import com.example.TransmiApp.model.Driver;
+import com.example.TransmiApp.repository.DriverRepository;
+import com.example.TransmiApp.service.DriverService;
 
 @Service
 public class DriverServiceImpl implements DriverService {
@@ -17,12 +17,12 @@ public class DriverServiceImpl implements DriverService {
 
     @Override
     public List<Driver> getAllDrivers() {
-        return driverRepository.findAll();
+        return (List<Driver>) driverRepository.findAll();
     }
 
     @Override
-    public Optional<Driver> getDriverById(Long idDriver) {
-        return driverRepository.findById(idDriver);
+    public Driver getDriverById(Long idDriver) {
+        return driverRepository.findById(idDriver).orElse(null);
     }
 
     @Override
@@ -31,16 +31,22 @@ public class DriverServiceImpl implements DriverService {
     }
 
     @Override
-    public Optional<Driver> updateDriver(Long idDriver, Driver driver) {
-        if (driverRepository.existsById(idDriver)) {
-            driver.setIdDriver(idDriver);
-            return Optional.of(driverRepository.save(driver));
-        }
-        return Optional.empty();
+    public Driver updateDriver(Long idDriver, Driver driver) {
+        Driver existingDriver = driverRepository.findById(idDriver).orElseThrow();
+
+        existingDriver.setName(driver.getName());
+        existingDriver.setIdentification(driver.getIdentification());
+        existingDriver.setPhone(driver.getPhone());
+        existingDriver.setAddress(driver.getAddress());
+        existingDriver.setAssignments(driver.getAssignments());
+        
+        return driverRepository.save(existingDriver);
     }
 
     @Override
     public void deleteDriver(Long idDriver) {
-        driverRepository.deleteById(idDriver);
+        if (driverRepository.existsById(idDriver)) {
+            driverRepository.deleteById(idDriver);
+        }
     }
 }

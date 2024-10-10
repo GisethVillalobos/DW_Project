@@ -42,6 +42,47 @@ public class Assignment {
     @JsonBackReference
     private Schedule schedule;
 
+
+    public Long getIdAssignment() {
+        return idAssignment;
+    }
+
+    public void setIdAssignment(Long idAssignment) {
+        this.idAssignment = idAssignment;
+    }
+
+    public Driver getDriver() {
+        return driver;
+    }
+
+    public void setDriver(Driver driver) {
+        this.driver = driver;
+    }
+
+    public Bus getBus() {
+        return bus;
+    }
+
+    public void setBus(Bus bus) {
+        this.bus = bus;
+    }
+
+    public Route getRoute() {
+        return route;
+    }
+
+    public void setRoute(Route route) {
+        this.route = route;
+    }
+
+    public Schedule getSchedule() {
+        return schedule;
+    }
+
+    public void setSchedule(Schedule schedule) {
+        this.schedule = schedule;
+    }
+
     public Assignment(Driver driver, Bus bus, Route route, Schedule schedule) {
         this.driver = driver;
         this.bus = bus;

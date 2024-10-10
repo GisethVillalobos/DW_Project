@@ -1,13 +1,13 @@
 package com.example.TransmiApp.service.impl;
 
-import com.example.TransmiApp.model.Bus;
-import com.example.TransmiApp.repository.BusRepository;
-import com.example.TransmiApp.service.BusService;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import com.example.TransmiApp.model.Bus;
+import com.example.TransmiApp.repository.BusRepository;
+import com.example.TransmiApp.service.BusService;
 
 @Service
 public class BusServiceImpl implements BusService {
@@ -17,12 +17,12 @@ public class BusServiceImpl implements BusService {
 
     @Override
     public List<Bus> getAllBuses() {
-        return busRepository.findAll();
+        return (List<Bus>) busRepository.findAll();
     }
 
     @Override
-    public Optional<Bus> getBusById(Long idBus) {
-        return busRepository.findById(idBus);
+    public Bus getBusById(Long idBus) {
+        return busRepository.findById(idBus).orElse(null);
     }
 
     @Override
@@ -31,12 +31,14 @@ public class BusServiceImpl implements BusService {
     }
 
     @Override
-    public Optional<Bus> updateBus(Long idBus, Bus bus) {
-        if (busRepository.existsById(idBus)) {
-            bus.setIdBus(idBus);
-            return Optional.of(busRepository.save(bus));
-        }
-        return Optional.empty();
+    public Bus updateBus(Long idBus, Bus bus) {
+        Bus existingBus = busRepository.findById(idBus).orElseThrow();
+
+        existingBus.setPlate(bus.getPlate());
+        existingBus.setModel(bus.getModel());
+        existingBus.setAssignments(bus.getAssignments());
+        
+        return busRepository.save(existingBus);
     }
 
     @Override
